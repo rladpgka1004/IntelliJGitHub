@@ -42,4 +42,26 @@ public class BoardService {
         return boardDTOList;
     }
 
+
+    @Transactional
+    // 게시글의 id를 받아 해당 게시글의 데이터만 가져와 뿌려줌
+    public BoardDTO getPost(Long id){
+        BoardEntity boardEntity = boardRepository.findById(id).get();
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .id(boardEntity.getId())
+                .member(boardEntity.getMember())
+                .title(boardEntity.getTitle())
+                .content(boardEntity.getContent())
+                .createdDate(boardEntity.getCreatedData())
+                .build();
+        return boardDTO;
+    }
+
+    @Transactional
+//    /post/{id}로 요청받음 (1번 글에서 삭제를 클릭하면 /post/1로 접속
+    public void deletePost(Long id){
+        boardRepository.deleteById(id);
+    }
+
 }

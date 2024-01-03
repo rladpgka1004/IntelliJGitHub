@@ -5,8 +5,7 @@ import com.example.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +43,35 @@ public class BoradController {
         log.info("boardDTO.getTitle() = {}", boardDTO.getTitle());
         log.info("boardDTO.getTitle() = {}", boardDTO.getTitle());
         boardService.savePost(boardDTO);
+        return "redirect:/";
+    }
+
+    @GetMapping("/post/{id}")
+    public String detail(@PathVariable("id") Long id, Model model){
+        BoardDTO boardDTO = boardService.getPost(id);
+        model.addAttribute("post", boardDTO);
+        return "board/detail";
+    }
+
+
+    @GetMapping("/post/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model){
+        BoardDTO boardDTO = boardService.getPost(id);
+        model.addAttribute("post", boardDTO);
+        return "board/edit";
+    }
+
+//   수정된 게시글을 서버에 input하여 db에 저장하기위한 update
+    @PutMapping("/post/edit/{id}")
+    public String update(BoardDTO boardDTO){
+        boardService.savePost(boardDTO);
+        return "redirect:/";
+    }
+
+
+    @DeleteMapping("/post/{id}")
+    public String delete(@PathVariable("id") Long id){
+        boardService.deletePost(id);
         return "redirect:/";
     }
 }
