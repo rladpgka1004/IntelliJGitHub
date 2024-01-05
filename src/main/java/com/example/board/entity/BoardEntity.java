@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
-// JAP에게 해당 Entity는 Auditiong기능을 사용함을 알림
+// JPA에게 해당 Entity는 Auditing(시간 자동 매핑)기능을 사용함을 알림
 @EntityListeners(AuditingEntityListener.class) 
 public class BoardEntity {
 
@@ -39,7 +39,7 @@ public class BoardEntity {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @Builder
+    @Builder // null체크도 함
     public BoardEntity(Long id, String member, String title, String content){
         this.id = id;
         this.member = member;
